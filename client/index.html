@@ -33,7 +33,7 @@
 
       <button type="button" id="add-room">+</button>
 
-      <p>Type your messages here:</p>
+      <p>Type your messages here: </p>
       <input id="input" type="text"> </input>
       <button type="button" class="submit" id="send"> Submit </button> 
 
@@ -47,7 +47,20 @@
     $(document).ready(function (){
 
       app.fetch();
-  
+      setTimeout(function(){ 
+        renderData()
+      } , 200);
+
+      setInterval(function(){
+        fetchBasedOnRoom();
+        setTimeout(function(){
+          app.clearMessages();
+          renderData()
+        } , 200);
+
+      } , 4000);
+
+      //HELPER FUNCTIONS
       var fetchBasedOnRoom = function() {
         if (app.currentRoom === 'All') {
           app.fetch();
@@ -56,77 +69,27 @@
         }
       }
 
+      var regExSanitizer = function(unchecked) {
+        if (unchecked === undefined || unchecked === null) {
+          unchecked = '';
+        }
+  
+        var regExp = /<(|\/|[^>\/bi]|\/[^>bi]|[^\/>][^>]+|\/[^>][^>]+)>/g;
+        return unchecked.replace(regExp, '&lt;$1&gt;' )
+      }
+
       var renderData = function() {
         var chatterArray = app.messagesArray.results;
         for (var j = chatterArray.length-1; j >= 0; j--) {
           var tempObj = {};
-          tempObj.username = chatterArray[j].username;
-          tempObj.text = chatterArray[j].text;
-          tempObj.roomname = chatterArray[j].roomname;
+          tempObj.username = regExSanitizer(chatterArray[j].username);
+          tempObj.text = regExSanitizer(chatterArray[j].text);
+          tempObj.roomname = regExSanitizer(chatterArray[j].roomname);
           app.renderMessage(tempObj);
         }
-
-
-
-        // if (app.currentRoom === 'All') {
-        //   var chatterArray = app.messagesArray.results;
-        //   for (var j = chatterArray.length-1; j >= 0; j--) {
-        //     var tempObj = {};
-        //     tempObj.username = chatterArray[j].username;
-        //     tempObj.text = chatterArray[j].text;
-        //     tempObj.roomname = chatterArray[j].roomname;
-        //     app.renderMessage(tempObj);
-        //   }
-        // } else {
-        //   var roomArray = app.rooms[app.currentRoom];
-        //   for (var j = roomArray.length-1; j >= 0; j--) {
-        //     if( roomArray[j].roomname === app.currentRoom){
-        //       var tempObj = {};
-        //       tempObj.username = roomArray[j].username;
-        //       tempObj.text = roomArray[j].text;
-        //       tempObj.roomname = roomArray[j].roomname;
-        //       app.renderMessage(tempObj);
-        //     }
-        //   }
-        // }
-        
       };
 
-      // var gatherRoomData = function () {
-      //   var chatterArray = app.messagesArray.results;
-      //   var roomsMessagesObj = {};      
-
-      //   for (var i = 0; i < chatterArray.length; i++) {
-      //     var room = chatterArray[i].roomname;
-      //     if (app.rooms[room]) {
-      //       roomsMessagesObj[room][]
-      //         chatterArray[i].objectId = chatterArray[i]
-      //       }
-      //     }
-      //   }
-
-      //   for (var keys in roomsMessagesObj) {
-      //     for (var innerKeys in room)
-      //   }
-      // }
-
-
-      setTimeout(function(){ 
-        renderData()
-      } , 500);
-
-      setInterval(function(){
-        fetchBasedOnRoom();
-        //fetch new data
-        //below clears window and loads fetched data;
-        setTimeout(function(){
-          app.clearMessages();
-          renderData()
-        } , 1000);
-
-      } , 4000);
-
-      // adding listener to the room drop down list
+      //EVENT LISTENERS
       $("#roomSelect").change(function() {
         // Pure JS
         app.currentRoom = this.value;
@@ -154,21 +117,9 @@
           app.send(message);
           $('#input').val('');
         }
-
       });
-
-      // $('#delete').click(function() {
-        
-      //   app.clearMessages();
-      //   app.fetch();
-      // });
-
-      //trying to toggle friends
-      // $('.username').on('click', function(){
-      //   $(this).toggleClass('friend-class');
-      // });
-
     }); 
+
   </script>
   </body>
 </html>
