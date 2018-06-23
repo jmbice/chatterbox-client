@@ -29,12 +29,13 @@
 
       <select id="roomSelect">
         <option class="room" value="All">All</option>
-        <option class="room" value="Room2">Room2</option>
       </select>
+
+      <button type="button" id="add-room">+</button>
+
       <p>Type your messages here:</p>
       <input id="input" type="text"> </input>
-      <button type="button" class="submit" id="send"> Add Button </button> 
-      <button type="button" id="delete"> Delete Button </button> 
+      <button type="button" class="submit" id="send"> Submit </button> 
 
       <!-- Your HTML goes here! -->
     </div>
@@ -45,34 +46,98 @@
   <script>
     $(document).ready(function (){
 
-      // app.fetch();
-      // var renderData = function(){
-      //   console.log(app.messsagesArray);
-      //   var tweetsArray = app.messagesArray.results;
-      //   for (var j = tweetsArray.length-1; j >= 0; j--) {
-      //     var tempObj = {};
-      //     tempObj.username = tweetsArray[j].username;
-      //     tempObj.text = tweetsArray[j].text;
-      //     tempObj.roomname = tweetsArray[j].roomname;
-      //     app.renderMessage(tempObj);
+      app.fetch();
+  
+      var fetchBasedOnRoom = function() {
+        if (app.currentRoom === 'All') {
+          app.fetch();
+        } else {
+          app.fetchByRoom(app.currentRoom)
+        }
+      }
+
+      var renderData = function() {
+        var chatterArray = app.messagesArray.results;
+        for (var j = chatterArray.length-1; j >= 0; j--) {
+          var tempObj = {};
+          tempObj.username = chatterArray[j].username;
+          tempObj.text = chatterArray[j].text;
+          tempObj.roomname = chatterArray[j].roomname;
+          app.renderMessage(tempObj);
+        }
+
+
+
+        // if (app.currentRoom === 'All') {
+        //   var chatterArray = app.messagesArray.results;
+        //   for (var j = chatterArray.length-1; j >= 0; j--) {
+        //     var tempObj = {};
+        //     tempObj.username = chatterArray[j].username;
+        //     tempObj.text = chatterArray[j].text;
+        //     tempObj.roomname = chatterArray[j].roomname;
+        //     app.renderMessage(tempObj);
+        //   }
+        // } else {
+        //   var roomArray = app.rooms[app.currentRoom];
+        //   for (var j = roomArray.length-1; j >= 0; j--) {
+        //     if( roomArray[j].roomname === app.currentRoom){
+        //       var tempObj = {};
+        //       tempObj.username = roomArray[j].username;
+        //       tempObj.text = roomArray[j].text;
+        //       tempObj.roomname = roomArray[j].roomname;
+        //       app.renderMessage(tempObj);
+        //     }
+        //   }
+        // }
+        
+      };
+
+      // var gatherRoomData = function () {
+      //   var chatterArray = app.messagesArray.results;
+      //   var roomsMessagesObj = {};      
+
+      //   for (var i = 0; i < chatterArray.length; i++) {
+      //     var room = chatterArray[i].roomname;
+      //     if (app.rooms[room]) {
+      //       roomsMessagesObj[room][]
+      //         chatterArray[i].objectId = chatterArray[i]
+      //       }
+      //     }
       //   }
-      // };
-      
+
+      //   for (var keys in roomsMessagesObj) {
+      //     for (var innerKeys in room)
+      //   }
+      // }
 
 
-      // setTimeout(function(){ renderData() } , 1000);
+      setTimeout(function(){ 
+        renderData()
+      } , 500);
 
-      // setInterval(function(){
-      //   app.fetch(); //fetch new data
-      //   //below clears window and loads fetched data;
-      //   setTimeout(function(){
-      //     app.clearMessages();
-      //     renderData()
-      //   } , 1000);
+      setInterval(function(){
+        fetchBasedOnRoom();
+        //fetch new data
+        //below clears window and loads fetched data;
+        setTimeout(function(){
+          app.clearMessages();
+          renderData()
+        } , 1000);
 
-      // } , 4000);
+      } , 4000);
 
+      // adding listener to the room drop down list
+      $("#roomSelect").change(function() {
+        // Pure JS
+        app.currentRoom = this.value;
+      });
 
+      $('#add-room').click(function(){
+        var newRoom = prompt('Enter room name.');
+        app.renderRoom(newRoom);
+        app.rooms[newRoom] = {};
+        
+      });
 
       $('#send').click(function() {
         var textInput = $('#input').val();
@@ -86,17 +151,17 @@
           alert('Write something!');
         } else {
           app.renderMessage(message);
-          // app.send(message);
+          app.send(message);
           $('#input').val('');
         }
 
       });
 
-      $('#delete').click(function() {
+      // $('#delete').click(function() {
         
-        app.clearMessages();
-        app.fetch();
-      });
+      //   app.clearMessages();
+      //   app.fetch();
+      // });
 
       //trying to toggle friends
       // $('.username').on('click', function(){

@@ -4,6 +4,8 @@ app.init = function () {
 };
 
 app.messagesArray;
+app.currentRoom = 'All';
+app.rooms = {}; 
 
 app.send = function (message) {
     
@@ -35,7 +37,24 @@ app.fetch = function () {
   // This is the url you should use to communicate with the parse API server.
     url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
     type: 'GET',
-    data: { order: '-createdAt', limit: 50 },
+    data: { order: '-createdAt',  limit: 50 },
+    success: function (data) {
+      console.log('chatterbox: Message recieved');
+      app.messagesArray = data;
+    },
+    error: function (data) {
+    // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+      console.error('chatterbox: Failed to send message', data);
+    }
+  });
+};
+
+app.fetchByRoom = function (room) {
+  $.ajax({
+  // This is the url you should use to communicate with the parse API server.
+    url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
+    type: 'GET',
+    data: { order: '-createdAt', where: {"roomname":room} },
     success: function (data) {
       console.log('chatterbox: Message recieved');
       app.messagesArray = data;
@@ -51,7 +70,6 @@ app.clearMessages = function () {
   $('#chats').text('');
 };
 
-
 app.renderMessage = function (message) {
   var text = message.text;
   var user = message.username;
@@ -61,7 +79,6 @@ app.renderMessage = function (message) {
   $('#chats').prepend(appendMe);
 
 };
-
 
 app.renderRoom = function (roomName) {
   $('#roomSelect').append('<option class="room" value=' + roomName + '>' + roomName + '</option>');
