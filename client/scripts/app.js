@@ -21,14 +21,14 @@ app.send = function (message) {
     data: JSON.stringify(message),
     contentType: 'application/json',
     success: function (data) {
-        console.log('chatterbox: Message sent');
-      },
-      error: function (data) {
-        // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-        console.error('chatterbox: Failed to send message', data);
-      }
-    });
-  };
+      console.log('chatterbox: Message sent');
+    },
+    error: function (data) {
+      // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+      console.error('chatterbox: Failed to send message', data);
+    }
+  });
+};
 
 
 app.fetch = function () {
@@ -48,7 +48,7 @@ app.renderMessage = function (message) {
   var text = message.text;
   var user = message.username;
   var roomName = message.roomname;
-  var appendMe = '<div class="chats"> <div class="username" style="cursor: pointer;">' + user + '</div> <div class="post-text">' + text + '</div><div class="room">' + roomName + '</div></div>';
+  var appendMe = '<div class="chats"> <div class="username" style="cursor: pointer">' + user + '</div> <div class="post-text">' + text + '</div><div class="room">' + roomName + '</div></div>';
 
   $('#chats').append(appendMe);
 
@@ -56,6 +56,6 @@ app.renderMessage = function (message) {
 
 
 app.renderRoom = function (roomName) {
-  $('#roomSelect').append('<option class="room" value=' + roomName +'>' + roomName + '</option>')
+  $('#roomSelect').append('<option class="room" value=' + roomName +'>' + roomName + '</option>');
 };
 
