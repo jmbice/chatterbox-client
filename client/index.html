@@ -25,8 +25,60 @@
   <body>
     <div id="main">
       <h1>chatterbox</h1>
+
+    <select id="roomSelect">
+      <option class="room" value="Room1">Room1</option>
+    </select>
+
+
+
+    <p>Type your messages here:</p>
+    <input> </input>
+    <button type="button" class="submit" id="send"> Add Button </button> 
+    <button type="button" id="delete"> Delete Button </button> 
+
       <!-- Your HTML goes here! -->
     </div>
-    <div id="chats"></div>
+    <div id="chats" class="chats">
+      
+      
+
+    </div>
+
+  <script>
+    $(document).ready(function (){
+       /*$('#button').on('click', function(){
+          alert('hi');
+       });*/
+
+      var message = {
+        username: 'jp',
+        text: 'wassup',
+        roomname: 'meh'
+      };
+
+      $('#send').click(function() {
+        app.renderMessage(message);
+      });
+
+      $('#delete').click(function() {
+        var messageObject = {
+          username: 'abcd',
+          text: 'trial message',
+          roomname:'daRoom'
+        };
+        app.clearMessages();
+        app.send(messageObject);
+      });
+
+      $('.username').on('click', function(){
+        $(this).toggleClass('friend-class');
+        alert('it started working');
+        console.log('maybe?');
+      });
+
+      
+    }); 
+  </script>
   </body>
 </html>
