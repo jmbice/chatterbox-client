@@ -44,29 +44,33 @@
 
   <script>
     $(document).ready(function (){
-      //Make the request
-      //Iterate over the array
-      //Call render on each element
-      app.fetch();
-      var renderData = function(){
-        var tweetsArray = app.messagesArray.results;
-        for (var j = 0; j < tweetsArray.length; j++) {
-          var tempObj = {};
-          tempObj.username = tweetsArray[j].username;
-          tempObj.text = tweetsArray[j].text;
-          tempObj.roomname = tweetsArray[j].roomname;
-          app.renderMessage(tempObj);
-        }
-      };
+
+      // app.fetch();
+      // var renderData = function(){
+      //   console.log(app.messsagesArray);
+      //   var tweetsArray = app.messagesArray.results;
+      //   for (var j = tweetsArray.length-1; j >= 0; j--) {
+      //     var tempObj = {};
+      //     tempObj.username = tweetsArray[j].username;
+      //     tempObj.text = tweetsArray[j].text;
+      //     tempObj.roomname = tweetsArray[j].roomname;
+      //     app.renderMessage(tempObj);
+      //   }
+      // };
       
 
 
-      //setTimeout(function(){ renderData() } , 500);
+      // setTimeout(function(){ renderData() } , 1000);
 
-      // setInterval(function(){ 
-      //   app.clearMessages();
-      //   renderData()
-      // } , 3000);
+      // setInterval(function(){
+      //   app.fetch(); //fetch new data
+      //   //below clears window and loads fetched data;
+      //   setTimeout(function(){
+      //     app.clearMessages();
+      //     renderData()
+      //   } , 1000);
+
+      // } , 4000);
 
 
 
@@ -82,7 +86,7 @@
           alert('Write something!');
         } else {
           app.renderMessage(message);
-          //app.send(message);
+          // app.send(message);
           $('#input').val('');
         }
 
