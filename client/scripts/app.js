@@ -33,22 +33,17 @@ app.send = function (message) {
 app.fetch = function () {
   $.ajax({
   // This is the url you should use to communicate with the parse API server.
-  url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
-  type: 'GET',
-  data: { order: '-createdAt', limit: 50 },
-  success: function (data) {
-    console.log('chatterbox: Message recieved');
-    app.messagesArray = data;
-  },
-  error: function (data) {
+    url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
+    type: 'GET',
+    data: { order: '-createdAt', limit: 50 },
+    success: function (data) {
+      console.log('chatterbox: Message recieved');
+      app.messagesArray = data;
+    },
+    error: function (data) {
     // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-    console.error('chatterbox: Failed to send message', data);
-  }
-
-
-
-
-
+      console.error('chatterbox: Failed to send message', data);
+    }
   });
 };
 
@@ -69,6 +64,6 @@ app.renderMessage = function (message) {
 
 
 app.renderRoom = function (roomName) {
-  $('#roomSelect').append('<option class="room" value=' + roomName +'>' + roomName + '</option>');
+  $('#roomSelect').append('<option class="room" value=' + roomName + '>' + roomName + '</option>');
 };
 
