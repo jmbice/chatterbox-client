@@ -9,14 +9,15 @@
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script>
       // YOU DO NOT NEED TO EDIT THIS CODE
-      if (!/(&|\?)username=/.test(window.location.search)) {
-        var newSearch = window.location.search;
-        if (newSearch !== '' & newSearch !== '?') {
-          newSearch += '&';
-        }
-        newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
-        window.location.search = newSearch;
-      }
+      // if (!/(&|\?)username=/.test(window.location.search)) {
+      //   var newSearch = window.location.search;
+      //   if (newSearch !== '' & newSearch !== '?') {
+      //     newSearch += '&';
+      //   }
+      //   newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
+      //   window.location.search = newSearch;
+      // }
+    var userName = prompt('What is your name?');
     </script>
     <!-- your scripts -->
     <script src="env/config.js"></script>
@@ -26,58 +27,78 @@
     <div id="main">
       <h1>chatterbox</h1>
 
-    <select id="roomSelect">
-      <option class="room" value="Room1">Room1</option>
-    </select>
-
-
-
-    <p>Type your messages here:</p>
-    <input> </input>
-    <button type="button" class="submit" id="send"> Add Button </button> 
-    <button type="button" id="delete"> Delete Button </button> 
+      <select id="roomSelect">
+        <option class="room" value="All">All</option>
+        <option class="room" value="Room2">Room2</option>
+      </select>
+      <p>Type your messages here:</p>
+      <input id="input" type="text"> </input>
+      <button type="button" class="submit" id="send"> Add Button </button> 
+      <button type="button" id="delete"> Delete Button </button> 
 
       <!-- Your HTML goes here! -->
     </div>
-    <div id="chats" class="chats">
-      
-      
-
+    <div id="chats" class="chats">  
+      <!-- messsages go here -->
     </div>
 
   <script>
     $(document).ready(function (){
-       /*$('#button').on('click', function(){
-          alert('hi');
-       });*/
-
-      var message = {
-        username: 'jp',
-        text: 'wassup',
-        roomname: 'meh'
+      //Make the request
+      //Iterate over the array
+      //Call render on each element
+      app.fetch();
+      var renderData = function(){
+        var tweetsArray = app.messagesArray.results;
+        for (var j = 0; j < tweetsArray.length; j++) {
+          var tempObj = {};
+          tempObj.username = tweetsArray[j].username;
+          tempObj.text = tweetsArray[j].text;
+          tempObj.roomname = tweetsArray[j].roomname;
+          app.renderMessage(tempObj);
+        }
       };
+      
+
+
+      //setTimeout(function(){ renderData() } , 500);
+
+      // setInterval(function(){ 
+      //   app.clearMessages();
+      //   renderData()
+      // } , 3000);
+
+
 
       $('#send').click(function() {
-        app.renderMessage(message);
+        var textInput = $('#input').val();
+        var message = {
+          username: userName,
+          text: textInput,
+          roomname: $('#roomSelect').val()
+        };
+        
+        if (message.text.length === 0) {
+          alert('Write something!');
+        } else {
+          app.renderMessage(message);
+          //app.send(message);
+          $('#input').val('');
+        }
+
       });
 
       $('#delete').click(function() {
-        var messageObject = {
-          username: 'abcd',
-          text: 'trial message',
-          roomname:'daRoom'
-        };
+        
         app.clearMessages();
-        app.send(messageObject);
+        app.fetch();
       });
 
-      $('.username').on('click', function(){
-        $(this).toggleClass('friend-class');
-        alert('it started working');
-        console.log('maybe?');
-      });
+      //trying to toggle friends
+      // $('.username').on('click', function(){
+      //   $(this).toggleClass('friend-class');
+      // });
 
-      
     }); 
   </script>
   </body>
