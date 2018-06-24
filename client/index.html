@@ -27,6 +27,7 @@
     <div id="main">
       <h1>chatterbox</h1>
 
+      <p>Select your chatroom</p>
       <select id="roomSelect">
         <option class="room" value="All">All</option>
       </select>
@@ -39,7 +40,7 @@
 
       <!-- Your HTML goes here! -->
     </div>
-    <div id="chats" class="chats">  
+    <div id="chat-log">  
       <!-- messsages go here -->
     </div>
 
@@ -49,16 +50,16 @@
       app.fetch();
       setTimeout(function(){ 
         renderData()
-      } , 200);
+      }, 500);
 
       setInterval(function(){
         fetchBasedOnRoom();
         setTimeout(function(){
           app.clearMessages();
           renderData()
-        } , 200);
+        } , 100);
 
-      } , 4000);
+      } , 1000);
 
       //HELPER FUNCTIONS
       var fetchBasedOnRoom = function() {

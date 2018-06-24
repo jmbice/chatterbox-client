@@ -5,7 +5,7 @@ body {
     font-family: arial, sans-serif;
 }
 
-#main, #chats {
+#main, #chat-log {
     width: 500px;
     margin: auto;
     text-align: left;
@@ -93,7 +93,6 @@ form input[type=text] {
 }
 
 .friend {
-    color: #fff;
-    background-color: #0090da;
+    font-weight: bold;
 }
 

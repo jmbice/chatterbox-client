@@ -6,6 +6,7 @@ app.init = function () {
 app.messagesArray;
 app.currentRoom = 'All';
 app.rooms = {}; 
+app.friends = {};
 
 app.send = function (message) {
     
@@ -67,17 +68,29 @@ app.fetchByRoom = function (room) {
 };
 
 app.clearMessages = function () {
-  $('#chats').text('');
+  $('#chat-log').text('');
 };
 
 app.renderMessage = function (message) {
   var text = message.text;
-  var user = message.username;
   var roomName = message.roomname;
-  var appendMe = '<div class="chats"> <div class="username" style="cursor: pointer">' + user + '</div> <div class="post-text">' + text + '</div><div class="room">' + roomName + '</div></div>';
+  var user;
+  message.username === '' ? user = "No Name" : user = message.username;
+  /*app.friends[user] ? user = user + " friends" : user = user;*/
+  if (app.friends[user.replace(/\s/g, '_')]) {
+    var appendMe = '<div class="chats"> <div class="'+ user.replace(/\s/g, '_') + ' friend"> Name: ' + user + '</div> <div class="post-text"> Text: ' + text + '</div><div class="room"> Chatroom:' + roomName + '</div></div>';
+  } else {
+    var appendMe = '<div class="chats"> <div class=' + user.replace(/\s/g, '_') + '> Name: ' + user + '</div> <div class="post-text"> Text: ' + text + '</div><div class="room"> Chatroom:' + roomName + '</div></div>';
+  }
 
-  $('#chats').prepend(appendMe);
-
+  //var appendMe = '<div class="chats"> <div class=' + "" + user + "" + '> Name: ' + user + '</div> <div class="post-text"> Text: ' + text + '</div><div class="room"> Chatroom:' + roomName + '</div></div>';
+  $('#chat-log').prepend(appendMe);
+  
+  $(".chats").on('click', function() {
+    var className = $(this).children(0).attr('class');
+    app.friends[className] = className;
+    $("." +className).toggleClass('friend');
+  });
 };
 
 app.renderRoom = function (roomName) {
